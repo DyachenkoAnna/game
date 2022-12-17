@@ -5,6 +5,7 @@
 
 class Entity {
 public:
+	float moveTimer; //надо потом обратно в раздел protected убрать
 	sf::Texture texture;
 	sf::Sprite sprite;
 	sf::FloatRect GetRect() {return sf::FloatRect(x,y,w,h);};
@@ -19,7 +20,7 @@ public:
 	bool isAlive() { return life; }; 
 protected:
 	
-	float dx, dy, x, y, speed, moveTimer;
+	float dx, dy, x, y, speed;
 	int w, h, health;
 	bool life, isMove;
 	sf::String name;

@@ -53,7 +53,9 @@ int main()
 				anotherEnemy1->draw(window);
 				BossEnemy->draw(window);
 
+				anotherEnemy->moveTimer+=0.05;
 				anotherEnemy->action(0.1);
+				anotherEnemy->animation();
 				BossEnemy->action(0.1);
 			}
 		window.display();

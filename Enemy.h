@@ -14,6 +14,7 @@ public:
 	void draw(sf::RenderTarget& target);	//Так как нужно много за раз нарисовать, то вынесем в отдельный метод	
 
 	int action(float);			//действия врагов
+	void animation();
 	void SetDirection();		//вычисление направления по координатам, взятых с SetAim
 private:
 	//Будет вызываться внутри, так что инкапсулирую ф-ии

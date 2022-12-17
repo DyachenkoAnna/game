@@ -141,6 +141,54 @@ int Enemy::SetAim(sf::Vector2f XY)
 }
 
 
+void Enemy::animation()
+{
+	if (name == "flybot")
+	{
+		healthSprite.setTextureRect(sf::IntRect(0, 0, 9 + health / 4, 8));//health ('max = 100') / 4 = 25
+		if (status == "anikilled")
+		{
+			if (moveTimer < 100)
+			{
+				sprite.setTextureRect(sf::IntRect(240, 1, 80, 80));
+			}
+			else if (moveTimer < 200)
+			{
+				sprite.setColor(sf::Color::Red);
+			}
+			else
+			{
+				status = "killed";
+			}
+		}
+		else if (moveTimer < 200)
+		{
+			sprite.setTextureRect(sf::IntRect(12, 6, 57, 68));
+		}
+		else if (moveTimer < 400)
+		{
+			sprite.setTextureRect(sf::IntRect(172, 5, 56, 69));
+		}
+		else if (moveTimer < 600)
+		{
+			sprite.setTextureRect(sf::IntRect(92, 5, 58, 72));
+		}
+		else if (moveTimer < 800)
+		{
+			sprite.setTextureRect(sf::IntRect(172, 5, 56, 69));
+		}
+		else
+		{
+			moveTimer = 0;
+		}
+	}
+	else if (name == "BOSSbot")
+	{
+		// тут анимацию босса забацай
+	}
+}
+
+
 void Enemy::SetDirection()
 {
 	float rotation = (atan2(XYAim.y - y, XYAim.x - x)); // вращение по радианам
