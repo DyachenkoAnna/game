@@ -126,6 +126,25 @@ sf::FloatRect Enemy::GetRect()
 	return BufRect;
 }
 
+
+int Enemy::SetAim(sf::Vector2f XY)
+{
+
+	if (!isMove) {
+		if (name == "flybot")
+		{
+			//?
+		}
+		else if (name == "BOSSbot")
+		{
+			XYAim = SpaunTarget();
+			//Пункт назначения - спаун
+		}
+	}
+	return 0;
+}
+
+
 void Enemy::struck(int damage)
 {
 	health -= damage;
