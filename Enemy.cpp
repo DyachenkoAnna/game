@@ -98,3 +98,4 @@ sf::FloatRect Enemy::GetRect()
 
 	return BufRect;
 }
+
