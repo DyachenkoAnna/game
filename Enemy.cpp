@@ -113,3 +113,8 @@ sf::FloatRect Enemy::GetRect()
 	}
 	return BufRect;
 }
+
+void Enemy::struck(int damage)
+{
+	health -= damage;
+}

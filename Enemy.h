@@ -8,6 +8,7 @@ public:
 	Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, sf::String TileMapEnemy[HEIGHT_MAP]);
 	sf::Vector2f GetXY() { return sf::Vector2f(x, y); }; // Возвращает позицию спрайта Enemy
 	void SetStatus(sf::String St) { status = St; };
+	void struck(int damage);
 	sf::FloatRect GetRect();// Переопределили функцию, чтобы подвинуть хитбокс
 	void draw(sf::RenderTarget& target);// Так как нужно много за раз нарисовать, то вынесем в отдельный метод	
 private:
