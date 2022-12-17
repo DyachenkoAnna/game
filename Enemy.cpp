@@ -32,7 +32,16 @@ Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, 
 	std::cout << "Object has been created.\n";
 }
 
-
+int Enemy::checkCollisionWithMap(float Dx, float Dy)
+{
+	for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по элементам карты
+		for (int j = x / 32; j < (x + w) / 32; j++)
+		{
+			if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+				isMove = false;
+		}
+	return 0;
+}
 
 void Enemy::draw(sf::RenderTarget& target)
 {
@@ -43,8 +52,6 @@ void Enemy::draw(sf::RenderTarget& target)
 	}
 	target.draw(healthSprite);
 }
-
-
 
 sf::Vector2f Enemy::SpaunTarget()
 {
@@ -90,12 +97,19 @@ sf::Vector2f Enemy::SpaunTarget()
 sf::FloatRect Enemy::GetRect()
 {
 	sf::FloatRect BufRect;
-		
-	BufRect.left = x;
-	BufRect.top = y;
-	BufRect.width = w;
-	BufRect.height = h;
-
+	if (name == "BOSSbot")
+	{
+		BufRect.left = x;
+		BufRect.top = y;
+		BufRect.width = w;
+		BufRect.height = h;
+	}
+	if (name == "flybot")
+	{
+		BufRect.left = x + 5;
+		BufRect.top = y + 5;
+		BufRect.width = w - 5;
+		BufRect.height = h - h / 4;
+	}
 	return BufRect;
 }
-
