@@ -52,6 +52,9 @@ int main()
 				anotherEnemy->draw(window);
 				anotherEnemy1->draw(window);
 				BossEnemy->draw(window);
+
+				anotherEnemy->action(0.1);
+				BossEnemy->action(0.1);
 			}
 		window.display();
 	}

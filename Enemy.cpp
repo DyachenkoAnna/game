@@ -141,6 +141,54 @@ int Enemy::SetAim(sf::Vector2f XY)
 }
 
 
+void Enemy::SetDirection()
+{
+	float rotation = (atan2(XYAim.y - y, XYAim.x - x)); // вращение по радианам
+	dx = cos(rotation) * 0.1;// 
+	dy = sin(rotation) * 0.08;//»зза разницы размеров по x & y умножаем соответсвенно
+}
+
+
+//ƒл€ определени€ действи€ врага
+int Enemy::action(float time)
+{
+	if (!isMove)
+	{
+		isMove = true;
+		SetDirection();	//≈сли не двигаемс€, то начинаем
+						//а то че сто€ть тут
+	}
+	else
+	{
+		if (state == stay)
+		{
+			return 0;
+			//стоим
+		}
+		x += dx * time * speed;
+		checkCollisionWithMap(dx, 0);
+		y += dy * time * speed;
+		checkCollisionWithMap(0, dy);
+		//подвинули и проверили на столкновение
+		sprite.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта
+		if (name == "BOSSbot")
+		{
+			BossPart.setPosition(x + w / 2 - 5, y + h / 2 - 10);
+			
+		}
+
+		if (abs(XYAim.x - x) < w && abs(XYAim.y - y) < h)
+		{
+			isMove = false;
+			dx = 0;
+			dy = 0;
+			//ƒостигли точки назначени€. ѕора искать новую цель.
+		}
+	}
+	return 0;
+}
+
+
 void Enemy::struck(int damage)
 {
 	health -= damage;
