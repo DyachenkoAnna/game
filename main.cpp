@@ -16,7 +16,6 @@ int main()
 	s_bot.setTexture(bot);
 	Enemy* anotherEnemy = new Enemy(img, 200, 200, 45, 65, "flybot", TileMapMy);
 	Enemy* anotherEnemy1 = new Enemy(img, 200, 200, 45, 65, "flybot", TileMapMy);
-
 	Enemy* BossEnemy = new Enemy(img, 200, 200, 120, 90, "BOSSbot", TileMapMy);
 
 	//Далее идет мой отладочный код. Он выводит карту на экран.
@@ -55,7 +54,6 @@ int main()
 				BossEnemy->draw(window);
 			}
 		window.display();
-		//window.draw(anotherEnemy);
 	}
 	return 0;
 }

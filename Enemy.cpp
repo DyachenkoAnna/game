@@ -41,7 +41,6 @@ Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, 
 		BossPart.setPosition(XY.x + W / 2 - 5, XY.y + H / 2 - 10);
 	}
 	sprite.setPosition(XY.x + W / 2, XY.y + H / 2);
-	std::cout << "Object has been created.\n";
 }
 
 int Enemy::checkCollisionWithMap(float Dx, float Dy)
@@ -80,8 +79,6 @@ sf::Vector2f Enemy::SpaunTarget()
 		}
 	if (countOfSpauns != 0)
 	{
-		//Sx = 150;
-		//Sy = 150;
 		int** SpaunsCoordinate = new int* [countOfSpauns];
 		for (int i = 0; i < countOfSpauns; ++i)
 		{
@@ -129,11 +126,10 @@ sf::FloatRect Enemy::GetRect()
 
 int Enemy::SetAim(sf::Vector2f XY)
 {
-
 	if (!isMove) {
 		if (name == "flybot")
 		{
-			//?
+			XYAim = XY; // א פכאיבמעû - ךאלטךאהחו :)
 		}
 		else if (name == "BOSSbot")
 		{
