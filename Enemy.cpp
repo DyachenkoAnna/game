@@ -174,7 +174,12 @@ int Enemy::action(float time)
 		if (name == "BOSSbot")
 		{
 			BossPart.setPosition(x + w / 2 - 5, y + h / 2 - 10);
-			
+			healthSprite.setPosition(x, y - 20);
+		}
+
+		else if (name == "flybot")
+		{
+			healthSprite.setPosition(x + 10, y - 10);
 		}
 
 		if (abs(XYAim.x - x) < w && abs(XYAim.y - y) < h)
