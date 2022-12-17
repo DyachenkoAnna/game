@@ -15,6 +15,7 @@ int main()
 	bot.loadFromImage(img);
 	s_bot.setTexture(bot);
 	Enemy* anotherEnemy = new Enemy(img, 200, 200, 120, 90, "flybot", TileMapMy);
+	Enemy* anotherEnemy1 = new Enemy(img, 200, 200, 120, 90, "flybot", TileMapMy);
 
 	//Далее идет мой отладочный код. Он ыводит карту на экран.
 	//Пусть пока что будет, потом сделаем этот файл красивым
@@ -47,6 +48,7 @@ int main()
 				s_map.setPosition(j * 32, i * 32);
 				window.draw(s_map);
 				anotherEnemy->draw(window);
+				anotherEnemy1->draw(window);
 			}
 		window.display();
 		//window.draw(anotherEnemy);

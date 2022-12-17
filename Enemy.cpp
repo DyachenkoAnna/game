@@ -61,8 +61,27 @@ sf::Vector2f Enemy::SpaunTarget()
 		}
 	if (countOfSpauns != 0)
 	{
-		Sx = 150;
-		Sy = 150;
+		//Sx = 150;
+		//Sy = 150;
+		int** SpaunsCoordinate = new int* [countOfSpauns];
+		for (int i = 0; i < countOfSpauns; ++i)
+		{
+			SpaunsCoordinate[i] = new int[2];
+		}
+		int randSpaun = rand() % countOfSpauns;
+		for (int i = 0; i < HEIGHT_MAP; i++)
+			for (int j = 0; j < WIDTH_MAP; j++)
+			{
+				if (TileMap[i][j] == 's')
+				{
+					countOfSpauns--;
+					SpaunsCoordinate[countOfSpauns][0] = i;
+					SpaunsCoordinate[countOfSpauns][1] = j;
+					//Выбрали случайный спаун
+				}
+			}
+		Sy = SpaunsCoordinate[randSpaun][0] * 32;// 32(х32). Именно такая площадь у одной координаты
+		Sx = SpaunsCoordinate[randSpaun][1] * 32;
 	}
 	return sf::Vector2f(Sx, Sy);
 }
