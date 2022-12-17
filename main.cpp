@@ -14,10 +14,12 @@ int main()
 	img.loadFromFile("images/robots.png");
 	bot.loadFromImage(img);
 	s_bot.setTexture(bot);
-	Enemy* anotherEnemy = new Enemy(img, 200, 200, 120, 90, "flybot", TileMapMy);
-	Enemy* anotherEnemy1 = new Enemy(img, 200, 200, 120, 90, "flybot", TileMapMy);
+	Enemy* anotherEnemy = new Enemy(img, 200, 200, 45, 65, "flybot", TileMapMy);
+	Enemy* anotherEnemy1 = new Enemy(img, 200, 200, 45, 65, "flybot", TileMapMy);
 
-	//Далее идет мой отладочный код. Он ыводит карту на экран.
+	Enemy* BossEnemy = new Enemy(img, 200, 200, 120, 90, "BOSSbot", TileMapMy);
+
+	//Далее идет мой отладочный код. Он выводит карту на экран.
 	//Пусть пока что будет, потом сделаем этот файл красивым
 	sf::Image map_image;
 	sf::Sprite s_map;
@@ -25,6 +27,7 @@ int main()
 	map_image.loadFromFile("images/map.png");
 	map.loadFromImage(map_image);
 	s_map.setTexture(map);
+	//sf::RenderWindow window(sf::VideoMode(1280, 800), "Game", sf::Style::Fullscreen);
 	sf::RenderWindow window(sf::VideoMode(1280, 800), "Game");
 
 	while (window.isOpen())
@@ -49,6 +52,7 @@ int main()
 				window.draw(s_map);
 				anotherEnemy->draw(window);
 				anotherEnemy1->draw(window);
+				BossEnemy->draw(window);
 			}
 		window.display();
 		//window.draw(anotherEnemy);

@@ -25,8 +25,20 @@ Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, 
 		//ѕоставили в точку
 	}
 	else if (name == "BOSSbot")
-	{
-		//код дл€ босса
+	{	
+		//w = 160; h = 60
+		health = 100;
+		BossPart.setTexture(texture);
+		BossPart.setTextureRect(sf::IntRect(754, 216, 145, 128));
+		sprite.setTextureRect(sf::IntRect(320, 0, 325, 292));
+
+		healthSprite.setTextureRect(sf::IntRect(2, 252, 167, 25));
+		healthSprite.setScale(0.5, 0.5);
+		BossPart.setScale(0.5, 0.5);
+		sprite.setScale(0.5, 0.5);// ”меньшили картинку в 2 раза
+		BossPart.setOrigin(64, 72);
+		sprite.setOrigin(162, 146);// Ќашли центр методом научного тыка и поставили спрайту
+		BossPart.setPosition(XY.x + W / 2 - 5, XY.y + H / 2 - 10);
 	}
 	sprite.setPosition(XY.x + W / 2, XY.y + H / 2);
 	std::cout << "Object has been created.\n";
