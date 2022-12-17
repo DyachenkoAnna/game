@@ -9,7 +9,12 @@
 int main()
 {	
 	sf::Image img;
-	Enemy* anotherEnemy = new Enemy(img, 200, 200, 120, 90, "bot", TileMapMy);
+	sf::Sprite s_bot;
+	sf::Texture bot;
+	img.loadFromFile("images/robots.png");
+	bot.loadFromImage(img);
+	s_bot.setTexture(bot);
+	Enemy* anotherEnemy = new Enemy(img, 200, 200, 120, 90, "flybot", TileMapMy);
 
 	//Далее идет мой отладочный код. Он ыводит карту на экран.
 	//Пусть пока что будет, потом сделаем этот файл красивым
@@ -41,8 +46,10 @@ int main()
 				else s_map.setTextureRect(sf::IntRect(160, 0, 32, 32));
 				s_map.setPosition(j * 32, i * 32);
 				window.draw(s_map);
+				anotherEnemy->draw(window);
 			}
 		window.display();
+		//window.draw(anotherEnemy);
 	}
 	return 0;
 }

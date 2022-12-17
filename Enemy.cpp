@@ -9,10 +9,26 @@ Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, 
 		TileMap[i] = TileMapEnemy[i];
 	}//Скопировали карту
 	isMove = false;
+	status = "WTFBOT";
+	state = fly;
 	sf::Vector2f XY = SpaunTarget();// находим начальные координаты
 	x = XY.x;
 	y = XY.y;
-
+	healthSprite.setTexture(texture);
+	if (name == "flybot")
+	{
+		sprite.setTextureRect(sf::IntRect(12, 5, 57, 68)); //w = 45; h = 63
+		//Подрезали спрайт
+		healthSprite.setTextureRect(sf::IntRect(0, 0, 34, 8));
+		//Подрезали спрайт
+		healthSprite.setPosition(XY.x + 10, XY.y - 10);
+		//Поставили в точку
+	}
+	else if (name == "BOSSbot")
+	{
+		//код для босса
+	}
+	sprite.setPosition(XY.x + W / 2, XY.y + H / 2);
 	std::cout << "Object has been created.\n";
 }
 

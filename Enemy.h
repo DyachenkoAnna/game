@@ -13,6 +13,7 @@ public:
 private:
 	// Будет вызываться внутри, так что инкапсулирую ф-ии
 	sf::Sprite BossPart;//босс состоит из 2х частей: голова и пилы
+	sf::Sprite healthSprite;//Спрайт для полоски HP
 	sf::String status;
 	sf::Vector2f SpaunTarget();// смотрим где наши спауны на карте
 	sf::String TileMap[HEIGHT_MAP];// карта
