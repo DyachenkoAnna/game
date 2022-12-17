@@ -1,12 +1,16 @@
 #include <iostream>
 #include "map.h"
+#include "Enemy.h"
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 
 //Файл с главной функцией
 
 int main()
-{
+{	
+	sf::Image img;
+	Enemy* anotherEnemy = new Enemy(img, 200, 200, 120, 90, "bot", TileMapMy);
+
 	//Далее идет мой отладочный код. Он ыводит карту на экран.
 	//Пусть пока что будет, потом сделаем этот файл красивым
 	sf::Image map_image;
