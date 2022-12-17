@@ -41,6 +41,7 @@ void Enemy::draw(sf::RenderTarget& target)
 	{
 		target.draw(BossPart);
 	}
+	target.draw(healthSprite);
 }
 
 
