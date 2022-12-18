@@ -1,13 +1,14 @@
 #include <iostream>
 #include "map.h"
+#include "Enemy.h"
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 
 //Файл с главной функцией
 
 int main()
-{
-	//Далее идет мой отладочный код. Он выодит карту на экран.
+{	
+	//Далее идет мой отладочный код. Он выводит карту на экран.
 	//Пусть пока что будет, потом сделаем этот файл красивым
 	sf::Image map_image;
 	sf::Sprite s_map;
