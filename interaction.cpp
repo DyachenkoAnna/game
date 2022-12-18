@@ -17,6 +17,7 @@ Engine::Engine()
 
 	//Создаем объект героя
 	Hero = new Player(allImage, 500, 500, 70, 80, "hero");
+	GameOver = false;
 }
 
 Engine::~Engine()
@@ -28,24 +29,44 @@ Engine::~Engine()
 
 int Engine::play(int number)
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 800), "Game");
-
+	sf::RenderWindow window(sf::VideoMode(1280, 800), "Game", sf::Style::Fullscreen);
+	//окно сформировали, сделали на полный экран
+	sf::Cursor cursor;
+	if (cursor.loadFromSystem(sf::Cursor::Cross))
+		window.setMouseCursor(cursor);
+	//устанавливаем курсор-крестик (типа прицел)
+	if (number != 1 && !MainMenu(window))
+	{
+		return 0;
+	}
 	float timerspaun = 0;//таймер для появления врагов
 	float gunTimer = 0;//для контроля выстрелов гг
 	float spaunlvl = 5000;//время нужное спауна
 	float timerLVLup = 0;//повышаем уровень, со временем
+	
+
+	//запускаем меню
+	if (number != 1 && !MainMenu(window))
+	{
+		return 0;
+	}
+
 
 	//Нужно реализовать вывод окна с картой и игроком
-
-	while (window.isOpen())
+	while (window.isOpen() && !GameOver)
 	{
+		
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
 		window.clear();
+
+
 
 		for (int i = 0; i < HEIGHT_MAP; i++)
 			for (int j = 0; j < WIDTH_MAP; j++)
@@ -69,3 +90,49 @@ int Engine::play(int number)
 
 
 
+int Engine::MainMenu(sf::RenderWindow& target)
+{
+	{
+		sf::Texture menuTexturePlay, menuTextureQuit, menuBackground;
+		menuTexturePlay.loadFromFile("images/Play.png");
+		menuTextureQuit.loadFromFile("images/Quit.png");
+		sf::Sprite menuPlay(menuTexturePlay), menuQuit(menuTextureQuit), menuBg(menuBackground);
+		bool isMenu = 1;
+		int menuNum = 0;
+		menuPlay.setPosition(500, 200);
+		menuQuit.setPosition(500, 500);
+
+		//////////////////////////////МЕНЮ///////////////////
+		while (isMenu)
+		{
+			menuPlay.setColor(sf::Color::White);
+			menuQuit.setColor(sf::Color::White);
+			menuNum = 0;
+			target.clear();
+
+			if (sf::IntRect(500, 200, 310, 110).contains(sf::Mouse::getPosition())) { menuPlay.setColor(sf::Color::Blue); menuNum = 1; }
+			if (sf::IntRect(500, 500, 310, 110).contains(sf::Mouse::getPosition())) { menuQuit.setColor(sf::Color::Blue); menuNum = 2; }
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				if (menuNum == 1)
+				{
+					isMenu = false;//если нажали первую кнопку, то выходим из меню 
+					return 1;
+				}
+				if (menuNum == 2)
+				{
+					isMenu = false;
+					return 0;
+				}
+
+			}
+			//target = window
+			target.draw(menuBg);
+			target.draw(menuPlay);
+			target.draw(menuQuit);
+			target.display();
+		}
+		return 0;
+	}
+}
