@@ -25,9 +25,9 @@ public:
 	void Addscore(int SCR) { score += SCR; };
 	int Gethealth() { return health; };
 	int update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event);// Жизнь объекта, ф-я вызывается в основной программе
-	//void struck(int damage);
-	//?? GetXY() {  }; // возвращение позиции спрайта героя
-	//?? GetgunXY();// возвращение позиции конца пушки
+	void struck(int damage);
+	sf::Vector2f GetXY() { return sf::Vector2f(x + w / 2, y + h / 2); }; // Возвращает позицию спрайта героя
+	sf::Vector2f GetgunXY();// возвращает позицию конца пушки
 	void draw(sf::RenderTarget& target);
 private:
 	// Будет вызываться внутри
