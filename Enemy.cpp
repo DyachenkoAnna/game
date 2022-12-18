@@ -27,7 +27,7 @@ Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, 
 	else if (name == "BOSSbot")
 	{	
 		//w = 160; h = 60
-		health = 100;
+		health = 500; //пожалуй 100 хп боссу будет маловато, пусть будет 500
 		BossPart.setTexture(texture);
 		BossPart.setTextureRect(sf::IntRect(754, 216, 145, 128));
 		sprite.setTextureRect(sf::IntRect(320, 0, 325, 292));
@@ -184,8 +184,75 @@ void Enemy::animation()
 	}
 	else if (name == "BOSSbot")
 	{
-		// тут анимацию босса забацай
+		healthSprite.setTextureRect(sf::IntRect(2, 252, 24 + health / 3.5, 25));	//хп ('max = 500') / 3,5 = 142
+		if (status == "anikilled")
+		{
+
+			if (moveTimer < 200)
+			{
+				sprite.setTextureRect(sf::IntRect(240, 1, 80, 80));
+				sprite.setScale(4, 4);
+			}
+			else if (moveTimer < 300)
+			{
+				sprite.setColor(sf::Color::Red);
+				BossPart.setColor(sf::Color::Red);
+			}
+			else if (moveTimer < 400)
+			{
+				sprite.setColor(sf::Color::Yellow);
+				BossPart.setColor(sf::Color::Black);
+			}
+			else if (moveTimer < 500)
+			{
+				status = "killed";
+			}
+			//there is coming a big bang
+		}
+		else if (moveTimer < 2000)
+		{
+			sprite.rotate(0.5);
+		}
+		else if (moveTimer < 4000)
+		{
+			sprite.rotate(-0.5);
+		}
+		else
+		{
+			moveTimer = 0;
+		}
 	}
+}
+
+
+int Enemy::update(float time)
+{	
+	if (!life)
+	{
+		return 0;
+		//мертв. сов7
+	}
+
+	moveTimer += time;
+	BOSSdamagetimer += time;
+	animation();
+	action(time);
+	if (status == "killed")
+	{
+		life = false;
+	}
+	else if (health <= 0 && status != "anikilled") {
+		status = "anikilled";
+		state = stay;
+		moveTimer = 0;
+		if (name == "BOSSbot")
+		{
+			sprite.setOrigin(40, 50);
+			sprite.setRotation(0);
+			//Далее меняем спрайт. для плавности
+		}
+	}
+	return 0;
 }
 
 

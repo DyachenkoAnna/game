@@ -8,6 +8,8 @@
 
 int main()
 {	
+	float Timer1 = 0;
+	float Timer2 = 0;
 	sf::Image img;
 	sf::Sprite s_bot;
 	sf::Texture bot;
@@ -53,10 +55,10 @@ int main()
 				anotherEnemy1->draw(window);
 				BossEnemy->draw(window);
 
-				anotherEnemy->moveTimer+=0.05;
-				anotherEnemy->action(0.1);
-				anotherEnemy->animation();
-				BossEnemy->action(0.1);
+				Timer1 += (0.00001);
+				anotherEnemy->update(Timer1);
+				Timer2 += (0.00001);
+				BossEnemy->update(Timer2);
 			}
 		window.display();
 	}
