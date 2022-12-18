@@ -9,6 +9,7 @@ public:
 
 private:
     Player* Hero;
+    float time;// основное врем€, отвечает за скорость игры
     std::vector<Enemy> enemies;
     sf::Clock clock;
 
@@ -16,7 +17,5 @@ private:
     sf::Image map_image;//объект изображения для карты
     sf::Image allImage;//Все изображения, которые исполузуются поверх карты
     sf::Sprite s_map;//спрайт для карты
-    sf::Texture map;//текстуры
-
-   
+    sf::Texture map;//текстуры   
 };
