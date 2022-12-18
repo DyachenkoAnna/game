@@ -8,18 +8,6 @@
 
 int main()
 {	
-	float Timer1 = 0;
-	float Timer2 = 0;
-	sf::Image img;
-	sf::Sprite s_bot;
-	sf::Texture bot;
-	img.loadFromFile("images/robots.png");
-	bot.loadFromImage(img);
-	s_bot.setTexture(bot);
-	Enemy* anotherEnemy = new Enemy(img, 200, 200, 45, 65, "flybot", TileMapMy);
-	Enemy* anotherEnemy1 = new Enemy(img, 200, 200, 45, 65, "flybot", TileMapMy);
-	Enemy* BossEnemy = new Enemy(img, 200, 200, 120, 90, "BOSSbot", TileMapMy);
-
 	//Далее идет мой отладочный код. Он выводит карту на экран.
 	//Пусть пока что будет, потом сделаем этот файл красивым
 	sf::Image map_image;
@@ -28,7 +16,6 @@ int main()
 	map_image.loadFromFile("images/map.png");
 	map.loadFromImage(map_image);
 	s_map.setTexture(map);
-	//sf::RenderWindow window(sf::VideoMode(1280, 800), "Game", sf::Style::Fullscreen);
 	sf::RenderWindow window(sf::VideoMode(1280, 800), "Game");
 
 	while (window.isOpen())
@@ -51,14 +38,6 @@ int main()
 				else s_map.setTextureRect(sf::IntRect(160, 0, 32, 32));
 				s_map.setPosition(j * 32, i * 32);
 				window.draw(s_map);
-				anotherEnemy->draw(window);
-				anotherEnemy1->draw(window);
-				BossEnemy->draw(window);
-
-				Timer1 += (0.00001);
-				anotherEnemy->update(Timer1);
-				Timer2 += (0.00001);
-				BossEnemy->update(Timer2);
 			}
 		window.display();
 	}
