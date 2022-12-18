@@ -88,8 +88,106 @@ int Player::checkCollisionWithMap(float Dx, float Dy, sf::String TileMap[HEIGHT_
 	
 	return 0;
 }
-//дописать анимацию
-//void Player::animation()
+
+//Анимация
+void Player::animation()
+{
+	if (state != stay)
+	{
+		if (moveTimer < 100)
+		{
+			wheelL.setTextureRect(sf::IntRect(1, 80, 19, 77));
+			wheelR.setTextureRect(sf::IntRect(20, 81, 19, 77));
+		}
+		else if (moveTimer < 200)
+		{
+			wheelL.setTextureRect(sf::IntRect(40, 82, 19, 77));
+			wheelR.setTextureRect(sf::IntRect(59, 82, 19, 77));
+		}
+		else
+		{
+			moveTimer = 0;
+		}
+		//Движение колес
+	}
+	gun.setRotation(gunrotation);
+	switch (state)
+	{
+	case Entity::left:
+		frame.setRotation(-90);
+		wheelL.setRotation(-90);
+		wheelR.setRotation(-90);
+		break;
+	case Entity::right:
+		frame.setRotation(90);
+		wheelL.setRotation(90);
+		wheelR.setRotation(90);
+		break;
+	case Entity::up:
+		frame.setRotation(0);
+		wheelL.setRotation(0);
+		wheelR.setRotation(0);
+		break;
+	case Entity::down:
+		frame.setRotation(180);
+		wheelL.setRotation(180);
+		wheelR.setRotation(180);
+		break;
+	default:
+		break;
+	}
+	//повернули спрайты по направлению движения
+	if (struckTimer > 0)
+	{
+		gun.setColor(sf::Color::Red);
+		frame.setColor(sf::Color::Red);
+		wheelL.setColor(sf::Color::Red);
+		wheelR.setColor(sf::Color::Red);
+	}
+	else
+	{
+		gun.setColor(sf::Color::White);
+		frame.setColor(sf::Color::White);
+		wheelL.setColor(sf::Color::White);
+		wheelR.setColor(sf::Color::White);
+	}//Красим при уроне
+	return;
+}
+
+//Движение главного игрока
+int Player::update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event)
+{
+	if (!life)
+	{
+		return 0;
+	}
+	if (struckTimer > 0)
+	{
+		struckTimer -= time;
+	}
+	moveTimer += time;
+	control(event);
+	animation();
+	switch (state)//тут делаются различные действия в зависимости от состояния
+	{
+	case right: dx = speed; dy = 0; break;//состояние идти вправо
+	case left: dx = -speed; dy = 0; break;//состояние идти влево
+	case up: dx = 0; dy = -speed; break;// состояние поднятия наверх 
+	case down: dx = 0; dy = speed; break;// состояние во время спуска  
+	case stay: dx = 0; dy = 0; break;//стоим		
+	}
+	x += dx * time;
+	checkCollisionWithMap(dx, 0, TileMap);//обрабатываем столкновение по Х
+	y += dy * time;
+	checkCollisionWithMap(0, dy, TileMap);//обрабатываем столкновение по Y
+	frame.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта 
+	wheelL.setPosition(x + w / 2, y + h / 2);
+	wheelR.setPosition(x + w / 2, y + h / 2);
+	gun.setPosition(x + w / 2, y + h / 2);
+	if (health <= 0) { life = false; }
+	speed = 0;
+	return 0;
+}
 
 //положение пушки
 //?? Player::GetgunXY()
@@ -98,4 +196,10 @@ int Player::checkCollisionWithMap(float Dx, float Dy, sf::String TileMap[HEIGHT_
 //void Player::struck(int damage)
 
 //отрисовка
-//void Player::draw(sf::RenderTarget& target)
+void Player::draw(sf::RenderTarget& target)
+{
+	target.draw(wheelL);
+	target.draw(wheelR);
+	target.draw(frame);
+	target.draw(gun);
+}
