@@ -25,10 +25,10 @@ public:
 	void Addscore(int SCR) { score += SCR; };
 	int Gethealth() { return health; };
 	int update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event);// Жизнь объекта, ф-я вызывается в основной программе
+	//void struck(int damage);
 	//?? GetXY() {  }; // возвращение позиции спрайта героя
 	//?? GetgunXY();// возвращение позиции конца пушки
-	//void struck(int damage);
-	//void draw(sf::RenderTarget& target);
+	void draw(sf::RenderTarget& target);
 private:
 	// Будет вызываться внутри
 	int control(sf::Event event);
