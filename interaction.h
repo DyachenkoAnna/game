@@ -9,16 +9,14 @@ public:
 
 private:
     Player* Hero;
-    std::vector<Enemy> enemies;
-    sf::Clock clock;
-
-    //������� �����������, � ������� ����� ���������� ����� + ������ ������ � �������� ��� ����� 
-    sf::Image map_image;//������ ����������� ��� �����
-    sf::Image allImage;//��� �����������, ������� ������������ ������ �����
-    sf::Sprite s_map;//������ ��� �����
-    sf::Texture map;//��������
-
+    std::vector<Enemy> enemies;// вектор врагов
+    sf::Clock clock;// аппаратный таймер
+    float time;// основное время, отвечает за скорость игры
+    sf::Image map_image;//объект изображения для карты
+    sf::Image allImage;//Все изображения, которые исполузуются поверх карты
+    sf::Sprite s_map;//спрайт для карты
+    sf::Texture map;
+    bool GameOver;//тригер для окончания игры
     int MainMenu(sf::RenderWindow& target);//меню при старте
-    bool GameOver; //проверка на конец игры
-
+    int RestartMenu(sf::RenderWindow& target);//меню внутри игры
 };
