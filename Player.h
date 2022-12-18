@@ -24,6 +24,7 @@ public:
 	int Getscore() { return score; };
 	void Addscore(int SCR) { score += SCR; };
 	int Gethealth() { return health; };
+	int update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event);// Жизнь объекта, ф-я вызывается в основной программе
 	//?? GetXY() {  }; // возвращение позиции спрайта героя
 	//?? GetgunXY();// возвращение позиции конца пушки
 	//void struck(int damage);
@@ -39,7 +40,7 @@ private:
 	float gunrotation;
 	int score;
 	float struckTimer;//для анимации нанесения урона
-	//void animation();
+	void animation();
 };
 
 #endif
