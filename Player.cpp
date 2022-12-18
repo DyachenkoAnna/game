@@ -196,4 +196,10 @@ int Player::update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event)
 //void Player::struck(int damage)
 
 //отрисовка
-//void Player::draw(sf::RenderTarget& target)
+void Player::draw(sf::RenderTarget& target)
+{
+	target.draw(wheelL);
+	target.draw(wheelR);
+	target.draw(frame);
+	target.draw(gun);
+}
