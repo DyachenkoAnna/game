@@ -31,7 +31,7 @@ int Engine::play(int number)
 	if (cursor.loadFromSystem(sf::Cursor::Cross))
 		window.setMouseCursor(cursor);
 	//устанавливаем курсор-крестик (типа прицел)
-	if (number != 1 && !MainMenu(window))
+	if (number != 1 && !MainMenu(window))//вызываем главное меню и получаем цифру
 	{
 		return 0;
 	}
@@ -175,7 +175,7 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 	}
 	else
 	{
-		menuPlay.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 - 120);
+		menuPlay.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 - 120);//убрать
 		menuRestart.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16);
 	}
 	menuQuit.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 + 120);
@@ -260,16 +260,16 @@ int Engine::MainMenu(sf::RenderWindow& target)
 			target.clear();
 
 			if (sf::IntRect(100, 200, 310, 110).contains(sf::Mouse::getPosition())) { menuPlay.setColor(sf::Color::Blue); menuNum = 1; }
-			if (sf::IntRect(100, 500, 310, 110).contains(sf::Mouse::getPosition())) { menuQuit.setColor(sf::Color::Blue); menuNum = 2; }
+			if (sf::IntRect(100, 500, 310, 110).contains(sf::Mouse::getPosition())) { menuQuit.setColor(sf::Color::Blue); menuNum = 0; }
 
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				if (menuNum == 1)
+				if (menuNum == 1)//выход
 				{
 					isMenu = false;//если нажали первую кнопку, то выходим из меню 
 					return 1;
 				}
-				if (menuNum == 2)
+				if (menuNum == 0)//начать играть
 				{
 					isMenu = false;
 					return 0;

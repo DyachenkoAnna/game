@@ -189,11 +189,44 @@ int Player::update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event)
 	return 0;
 }
 
-//положение пушки
-//?? Player::GetgunXY()
+//Положение пушки
+sf::Vector2f Player::GetgunXY()
+{
+	sf::Vector2f buf = gun.getPosition();
+	if (gunrotation < 45 && gunrotation > -45)
+	{
+		//верхний угол
+		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265) + 20;
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265);
+	}
+	else if (gunrotation < 135 && gunrotation > 45 || gunrotation < -225 && gunrotation > -270)
+	{
+		//правый
+		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265);
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) + 20;
+	}
+	else if (gunrotation < -45 && gunrotation > -135)
+	{
+		//левый
+		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265);
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) - 40;
+	}
+	else if (gunrotation < 225 && gunrotation > 135)
+	{
+		//нижний
+		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265) - 40;
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265);
+	}
+	//углы не все, но большинство. Чтоб подогнать к концу пушки
+	return buf;
+}
 
-//окрашивание цветом при уроне
-//void Player::struck(int damage)
+//Окрашивание при нанесении урона
+void Player::struck(int damage)
+{
+	health -= damage;
+	struckTimer = 200;//на 2мс в красный цвет
+}
 
 //отрисовка
 void Player::draw(sf::RenderTarget& target)
