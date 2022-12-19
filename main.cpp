@@ -12,7 +12,7 @@ int main()
 	int way = 2;//для определения действия при завершении игры
 	while (way != 0)
 	{
-		Engine* level = new Engine();//Создали объект = запусьтли игру
+		Engine* level = new Engine();//Создали объект = запустили игру
 		way = level->play(way);//начинаем игру
 		delete level;// Удалили объект (игру)
 	}

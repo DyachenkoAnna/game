@@ -1,39 +1,32 @@
-#include "interaction.h"
-#include "map.h"
+#include "interaction.h"//заголовочный файл 
+#include "map.h"//файл с заранее прописанной картой
 Engine::Engine()
 {
-
 	map_image.loadFromFile("images/map.png");//загружаем файл для карты
-	//текстура карты
-
 	map.loadFromImage(map_image);//заряжаем текстуру картинкой
 	s_map.setTexture(map);//заливаем текстуру спрайтом
-	allImage.loadFromFile("images/robots.png");
-	//загрузили изображения
+	allImage.loadFromFile("images/robots.png");	//загрузили изображения объектов
 	clock.restart(); //перезагружает время
-	//Создаем объект героя
-	Hero = new Player(allImage, 500, 500, 70, 80, "hero");
-
-	GameOver = false;
+	Hero = new Player(allImage, 500, 500, 70, 80, "hero");	//Создаем объект героя
+	GameOver = false;//игра "не окончена"
 }
 
 Engine::~Engine()
 {
-	delete Hero;
-	enemies.clear();
-	bullets.clear();
-	//очищаем память, за собой нужно убирать
+	delete Hero;//удаляет объект игрок
+	enemies.clear();//удаляет вектора врагов
+	bullets.clear();//удаляет вектора пули
+	//очищаем память
 }
 
 int Engine::play(int number)
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 800), "Game", sf::Style::Fullscreen);
-	//окно сформировали, сделали на полный экран
-	sf::Cursor cursor;
+	sf::RenderWindow window(sf::VideoMode(1280, 800), "Game", sf::Style::Fullscreen);//окно сформировали, сделали на полный экран
+	sf::Cursor cursor;//устанавливаем курсор-крестик (типа прицел)
 	if (cursor.loadFromSystem(sf::Cursor::Cross))
 		window.setMouseCursor(cursor);
-	//устанавливаем курсор-крестик (типа прицел)
-	if (number != 1 && !MainMenu(window))
+
+	if (number != 1 && !MainMenu(window))//возвращает 0, если нажат выход
 	{
 		return 0;
 	}
@@ -49,16 +42,15 @@ int Engine::play(int number)
 	Health.setTexture(healthTexture);
 
 	sf::Image gunDamageImg;
-	gunDamageImg.loadFromFile("images/Bullet.png");
+	gunDamageImg.loadFromFile("images/Bullet.png");//загрузили изображения пуля
 	sf::Texture gunDamageTexture;
 	gunDamageTexture.loadFromImage(gunDamageImg);
 	gunDamageTexture.setRepeated(true);
 	GunDamage.setTexture(gunDamageTexture);
-	//Поставили картинку здоровья гг и запал пушки
-	Health.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	Health.setTextureRect(sf::IntRect(0, 0, 32, 32));//Поставили картинку здоровья
 	Health.setScale(0.5, 0.5);
 	Health.setPosition(10, 10);
-	GunDamage.setTextureRect(sf::IntRect(0, 0, 70, 348));
+	GunDamage.setTextureRect(sf::IntRect(0, 0, 70, 348));//Поставили картинку заряда пушки
 	GunDamage.setScale(0.1, 0.1);
 	GunDamage.setPosition(10, 30);
 	while (window.isOpen() && !GameOver)
@@ -70,10 +62,10 @@ int Engine::play(int number)
 			{//нажали esc = открыли меню, игра на паузе
 				switch (RestartMenu(window))
 				{
-				case 0:
+				case 0://если 0, то закрывает игру
 					window.close();
 					return 0;
-				case 1:
+				case 1://если 1, то запуск игры
 					window.close();
 					return 1;
 				default:
@@ -91,9 +83,9 @@ int Engine::play(int number)
 		{
 			//30 сек и повысили сложность + появился босс
 			Enemy* anotherEnemy = new Enemy(allImage, 200, 200, 120, 90, "BOSSbot", TileMapMy);
-			enemies.push_back(*anotherEnemy);//ukazatel chtob kartina bila
+			enemies.push_back(*anotherEnemy);//указатель, чтоб подгрузить картинку
 			spaunlvl -= 500;
-			if (spaunlvl < 2000)
+			if (spaunlvl < 2000)//максимальная сложность, враг появляется раз в 2 секунды
 			{
 				spaunlvl = 2000;
 			}
@@ -103,20 +95,19 @@ int Engine::play(int number)
 		//
 		if (timerspaun > spaunlvl && enemies.size() < 10)
 		{
-			//пусть будет не больше 10 врагов, ок? А то они летают там везде, сложно бегать от них
+			//пусть будет не больше 10 врагов
 			Enemy* anotherEnemy = new Enemy(allImage, 200, 200, 45, 65, "flybot", TileMapMy);
-			enemies.push_back(*anotherEnemy);//ukazatel chtob kartina bila
+			enemies.push_back(*anotherEnemy);//указатель, чтобы подгрузить картинку
 			timerspaun = 0;
 		}
 
 		Hero->update(time, TileMapMy, event);//Герой сделал свой ход
 		Health.setTextureRect(sf::IntRect(0, 0, 32 * (Hero->Gethealth() / 20), 32));
-		if (gunTimer > 1000)
+		if (gunTimer > 1000)//максимальный урон = большая полоска
 		{
 			GunDamage.setTextureRect(sf::IntRect(0, 0, 70 * 10, 348));
-			//максимальный урон = большая полоска
 		}
-		else
+		else//чем меньше полоска, тем меньше урон
 		{
 			GunDamage.setTextureRect(sf::IntRect(0, 0, 70 * (gunTimer / 100), 348));
 		}
@@ -130,20 +121,20 @@ int Engine::play(int number)
 			}
 			if (damage > 20)
 			{
-				sf::Vector2f HeroXY = Hero->GetgunXY();
+				sf::Vector2f HeroXY = Hero->GetgunXY();//если пуля большая, то выстреливает из дула
 				Bullet* anotherBullet = new Bullet(allImage, HeroXY.x, HeroXY.y, 25, 25, Hero->GetRotation(), "HeroBullet", damage);
-				bullets.push_back(*anotherBullet);//ukazatel chtob kartina bila
+				bullets.push_back(*anotherBullet);//указатель, чтоб подгрузить картинку
 			}
 			else
 			{
-				sf::Vector2f HeroXY = Hero->GetXY();
+				sf::Vector2f HeroXY = Hero->GetXY();//если пулька маленькая, то высреливает из центра героя, т.к. иначе проблема с хитбоксами
 				Bullet* anotherBullet = new Bullet(allImage, HeroXY.x, HeroXY.y, 10, 10, Hero->GetRotation(), "HeroBullet", damage);
-				bullets.push_back(*anotherBullet);//ukazatel chtob kartina bila
+				bullets.push_back(*anotherBullet);//указатель, чтоб подгрузить картинку
 			}
 			gunTimer = 0;
 		}
-		std::vector<Enemy>::iterator iterEnemies = enemies.begin();//итераторы для пуль и врагов в начало + создаем их
-		std::vector<Bullet>::iterator iterBullet = bullets.begin();
+		std::vector<Enemy>::iterator iterEnemies = enemies.begin();//итераторы для врагов в начало + создаем их
+		std::vector<Bullet>::iterator iterBullet = bullets.begin();//итераторы для пуль в начало + создаем их
 		while (iterBullet != bullets.end())
 		{
 			if (iterBullet->isAlive())
@@ -163,9 +154,8 @@ int Engine::play(int number)
 				sf::Vector2f BufXYHero = Hero->GetXY();
 				iterEnemies->SetAim(BufXYHero);//цель - герой 
 				iterEnemies->update(time);//враг сходил
-				if (iterEnemies->GetName() == "BOSSbot" && iterEnemies->GetBOSSdamagetimer() > 2000)
+				if (iterEnemies->GetName() == "BOSSbot" && iterEnemies->GetBOSSdamagetimer() > 2000)//босс стреляет раз в 2 секунды
 				{
-					//босс стреляет раз в 2 секунды
 					sf::Vector2f BufXYEnemy = iterEnemies->GetXY();//берем координаты
 					float rotation = rotation = atan2(BufXYHero.y - BufXYEnemy.y, BufXYHero.x - BufXYEnemy.x) * 180 / 3.14159265 + 90;
 					//вычисляем угол поворота
@@ -176,7 +166,7 @@ int Engine::play(int number)
 
 				iterBullet = bullets.begin();
 				while (iterBullet != bullets.end())
-				{
+				{//Находим пересечение хитбоксов пули и врагов с героем, далее уничтожается пуля, а остальные получают урон
 					if (iterBullet->isAlive())
 					{
 						if (iterBullet->GetName() != "BossBullet" && iterBullet->GetRect().intersects(iterEnemies->GetRect()))
@@ -188,7 +178,6 @@ int Engine::play(int number)
 							Hero->struck(iterBullet->GetDamage());
 						}
 						++iterBullet;
-						//Находим пересечение хитбоксов пули и врагов с ГГ, далее уничтожается пуля, а отсальные получают урон
 					}
 					else
 					{
@@ -197,14 +186,14 @@ int Engine::play(int number)
 				}
 
 				if (Hero->GetRect().intersects(iterEnemies->GetRect()))
-				{
+				{//При стокновении героя и врагов
 					if (iterEnemies->GetName() == "BOSSbot")
 					{
 						if (iterEnemies->GetStatus() != "anikilled")
 						{
 							if (iterEnemies->GetBOSSdamagetimer() > 500)
 							{
-								//При пересечении хитбоксов ГГ и босса, босс бъет раз в 500 мкс
+								//При пересечении хитбоксов героя и босса, босс бъет раз в 500 мкс
 								Hero->struck(20);
 								iterEnemies->recetBOSSdamagetimer();
 							}
@@ -213,8 +202,7 @@ int Engine::play(int number)
 					}
 					else
 					{
-						iterEnemies->struck(100);
-						//Другие же получают урон, несовместимый с жизнью
+						iterEnemies->struck(100);//Другие же получают урон, несовместимый с жизнью
 						if (iterEnemies->GetStatus() != "anikilled")
 						{
 							Hero->struck(20);
@@ -228,11 +216,11 @@ int Engine::play(int number)
 			{
 				if (iterEnemies->GetName() == "BOSSbot")
 				{
-					Hero->Addscore(500);//Враг убит - получили очки
+					Hero->Addscore(500);//Босс убит - получили 500 очков
 				}
 				else if (iterEnemies->GetName() == "flybot")
 				{
-					Hero->Addscore(100);
+					Hero->Addscore(100);//flybot убит - получили 100 очков
 				}
 				iterEnemies = enemies.erase(iterEnemies); //стереть из списка
 			}
@@ -261,7 +249,6 @@ int Engine::play(int number)
 			if (iterEnemies->GetName() != "BOSSbot")
 			{
 				iterEnemies->draw(window);
-				//не босс рисуется
 				//босс выше всех летает
 			}
 			++iterEnemies;
@@ -333,11 +320,11 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 			}
 			if (sf::IntRect(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16, 310, 110).contains(sf::Mouse::getPosition()))
 			{
-				menuPlay.setColor(sf::Color::Blue); menuNum = 2;
+				menuPlay.setColor(sf::Color::Blue); menuNum = 2;// 2 = играть
 			}
 			if (sf::IntRect(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 + 120, 310, 110).contains(sf::Mouse::getPosition()))
 			{
-				menuQuit.setColor(sf::Color::Blue); menuNum = 0;
+				menuQuit.setColor(sf::Color::Blue); menuNum = 0;// 0 = выйти
 			}
 		}
 		else
@@ -384,7 +371,7 @@ int Engine::MainMenu(sf::RenderWindow& target)
 		int menuNum = 0;
 		menuPlay.setPosition(100, 200);
 		menuQuit.setPosition(100, 500);
-		menuBg.setPosition(0, 0);//красивый background 1280х800px
+		menuBg.setPosition(0, 0);
 		//////////////////////////////МЕНЮ///////////////////
 		while (isMenu)
 		{
@@ -398,12 +385,12 @@ int Engine::MainMenu(sf::RenderWindow& target)
 
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				if (menuNum == 1)
+				if (menuNum == 1)//если нажали кнопку играть, то запускаем игру
 				{
-					isMenu = false;//если нажали первую кнопку, то выходим из меню 
+					isMenu = false;
 					return 1;
 				}
-				if (menuNum == 2)
+				if (menuNum == 2)//если нажали кнопку выйти, то закрытили игру
 				{
 					isMenu = false;
 					return 0;
