@@ -20,6 +20,7 @@ Engine::~Engine()
 {
 	delete Hero;
 	enemies.clear();
+	bullets.clear();
 	//очищаем память, за собой нужно убирать
 }
 
@@ -39,6 +40,11 @@ int Engine::play(int number)
 	float gunTimer = 0;//для контроля выстрелов гг
 	float spaunlvl = 5000;//время нужное спауна
 	float timerLVLup = 0;//повышаем уровень, со временем
+	sf::Image gunDamageImg;
+	gunDamageImg.loadFromFile("images/Bullet.png");
+	sf::Texture gunDamageTexture;
+	gunDamageTexture.loadFromImage(gunDamageImg);
+	gunDamageTexture.setRepeated(true);
 
 	while (window.isOpen() && !GameOver)
 	{//Пока окно открыто и игра не закончена
@@ -97,8 +103,42 @@ int Engine::play(int number)
 		{
 			//чем меньше полоска, тем меньшн урона
 		}
-
+		if (gunTimer > 150 && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			int damage = gunTimer / 10;
+			if (damage > 100)
+			{
+				damage = 100;
+			}
+			if (damage > 20)
+			{
+				sf::Vector2f HeroXY = Hero->GetgunXY();
+				Bullet* anotherBullet = new Bullet(allImage, HeroXY.x, HeroXY.y, 25, 25, Hero->GetRotation(), "HeroBullet", damage);
+				bullets.push_back(*anotherBullet);//ukazatel chtob kartina bila
+			}
+			else
+			{
+				sf::Vector2f HeroXY = Hero->GetXY();
+				Bullet* anotherBullet = new Bullet(allImage, HeroXY.x, HeroXY.y, 10, 10, Hero->GetRotation(), "HeroBullet", damage);
+				bullets.push_back(*anotherBullet);//ukazatel chtob kartina bila
+			}
+			gunTimer = 0;
+		}
+		std::vector<Bullet>::iterator iterBullet = bullets.begin();
 		std::vector<Enemy>::iterator iterEnemies = enemies.begin();//итераторы для пуль и врагов в начало + создаем их
+		while (iterBullet != bullets.end())
+		{
+			if (iterBullet->isAlive())
+			{
+				iterBullet->update(time, TileMapMy);
+				++iterBullet;//проходим по каждому объекту в векторе
+			}
+			else
+			{
+				iterBullet = bullets.erase(iterBullet); //стереть из списка
+			}
+		}
+
 		GameOver = !Hero->isAlive();
 		//drawing ->
 		window.clear();
@@ -128,6 +168,11 @@ int Engine::play(int number)
 			iterEnemies->draw(window);
 			//здесь будут обычные мобы
 			++iterEnemies;
+		}
+		iterBullet = bullets.begin();
+		while (iterBullet != bullets.end()) {
+			window.draw(iterBullet->sprite);
+			++iterBullet;
 		}
 		window.display();
 	}
