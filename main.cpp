@@ -2,14 +2,20 @@
 #include "interaction.h"
 
 /*
-����� ���� � ���������.
-���������� ��� ������� ��� sf::Vector2f
+Здесь вход в программу.
+используем для вектора тип sf::Vector2f
 */
 
 int main()
 {
 	srand(unsigned(time(0)));
-	Engine* level = new Engine();//������� ������ = ��������� ����
-	level->play(0);//����������� ����� ����������� ������� �� �����
-	delete level;// ������� ������ (����)
+	int way = 2;//для определения действия при завершении игры
+	while (way != 0)
+	{
+		Engine* level = new Engine();//Создали объект = запусьтли игру
+		way = level->play(way);//начинаем игру
+		delete level;// Удалили объект (игру)
+	}
+
+	return 0;
 }
