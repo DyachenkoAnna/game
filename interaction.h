@@ -10,6 +10,10 @@ public:
 
 private:
     Player* Hero;//объуект игры
+
+    sf::Font font;// шрифт для текста
+    sf::Text text;// текст
+
     std::vector<Bullet> bullets;// вектор пуль
     std::vector<Enemy> enemies;// вектор врагов
     sf::Clock clock;// аппаратный таймер, время процесса игры

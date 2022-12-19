@@ -9,6 +9,12 @@ Engine::Engine()
 	clock.restart(); //перезагружает время
 	Hero = new Player(allImage, 500, 500, 70, 80, "hero");	//Создаем объект героя
 	GameOver = false;//игра "не окончена"
+
+	font.loadFromFile("images\\Calibri.ttf");//шрифт загрузили
+	text.setFont(font);
+	text.setCharacterSize(24);
+	text.setStyle(sf::Text::Bold);
+	text.setPosition(1000, 5);
 }
 
 Engine::~Engine()
@@ -268,6 +274,9 @@ int Engine::play(int number)
 		}
 		window.draw(GunDamage);
 		window.draw(Health);
+		text.setString("Score: " + std::to_string(Hero->Getscore()));//преобразовали цифру в текст и показали
+		window.draw(text);
+
 		window.display();
 	}
 	if (RestartMenu(window))
@@ -331,6 +340,8 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 		{
 			//если игра окончена, то саму игру надо закрасить
 			target.clear(sf::Color(255, 228, 200));
+			text.setCharacterSize(64);
+			text.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 - 120);
 			if (sf::IntRect(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16, 310, 110).contains(sf::Mouse::getPosition()))
 			{
 				menuRestart.setColor(sf::Color::Blue); menuNum = 1;
@@ -354,6 +365,10 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 		}
 		target.draw(menuRestart);
 		target.draw(menuQuit);
+
+		text.setString("Score: " + std::to_string(Hero->Getscore())); 
+		target.draw(text); 
+
 		target.display();
 	}
 	return 0;
