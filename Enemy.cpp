@@ -222,6 +222,7 @@ int Enemy::animation()
 			moveTimer = 0;
 		}
 	}
+	return 0;
 }
 
 
