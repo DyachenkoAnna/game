@@ -20,7 +20,7 @@ public:
 private:
 	//Будет вызываться внутри, так что инкапсулирую функции
 	float BOSSdamagetimer;
-	sf::Sprite BossPart;		//босс состоит из 2х частей: голова и пилы
+	sf::Sprite BossPart;		//босс состоит из 2х частей. Это - голова, которая поставится на движущуюся часть (пилы)
 	sf::Sprite healthSprite;	//спрайт для полоски HP
 	sf::Vector2f XYAim;			//координата спрайта игрока
 	sf::String status;

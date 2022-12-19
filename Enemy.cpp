@@ -1,9 +1,10 @@
 #include "Enemy.h";
-#include <iostream>
+//#include <iostream> //была для отладки
 
 Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, sf::String TileMapEnemy[HEIGHT_MAP]) :Entity(image, X, Y, W, H, Name)
 {
-	speed = 1;
+	speed = 0.5; //при 1 слишком быстро, лучше медленнее
+	BOSSdamagetimer = 0;
 	for (int i = 0; i < HEIGHT_MAP; i++)
 	{
 		TileMap[i] = TileMapEnemy[i];
@@ -27,7 +28,7 @@ Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, 
 	else if (name == "BOSSbot")
 	{	
 		//w = 160; h = 60
-		health = 500; //пожалуй 100 хп боссу будет маловато, пусть будет 500
+		health = 500; //500 хп боссу
 		BossPart.setTexture(texture);
 		BossPart.setTextureRect(sf::IntRect(754, 216, 145, 128));
 		sprite.setTextureRect(sf::IntRect(320, 0, 325, 292));
@@ -49,7 +50,10 @@ int Enemy::checkCollisionWithMap(float Dx, float Dy)
 		for (int j = x / 32; j < (x + w) / 32; j++)
 		{
 			if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+			{
 				isMove = false;
+				SetDirection();
+			}
 		}
 	return 0;
 }
@@ -232,6 +236,10 @@ int Enemy::update(float time)
 	{
 		return 0;
 		//мертв. сов7
+	}
+	if (speed < 1)
+	{
+		speed += 0.001;// Наращиваем скорость, чтоб сразу после спауна не врезаться
 	}
 
 	moveTimer += time;
