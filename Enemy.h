@@ -13,7 +13,10 @@ public:
 	void struck(int damage);
 	sf::FloatRect GetRect();	//Переопределили функцию, чтобы подвинуть хитбокс
 	void draw(sf::RenderTarget& target);	//Так как нужно много за раз нарисовать, то вынесем в отдельный метод	
-	//нужны методы get и set для bossdamagetimer?
+	sf::String GetStatus() { return status; }; // статус объекта
+	sf::String GetName() { return name; }; // босс или флайбот
+	void recetBOSSdamagetimer() { BOSSdamagetimer = 0; };// для сброса таймера атаки босса
+	float GetBOSSdamagetimer() { return BOSSdamagetimer; };// вернули таймер
 private:
 	//Будет вызываться внутри, так что инкапсулирую функции
 	float BOSSdamagetimer;
@@ -22,7 +25,7 @@ private:
 	sf::Vector2f XYAim;			//координата спрайта игрока
 	sf::String status;
 	int action(float);			//действия врагов
-	void animation();
+	int animation();
 	void SetDirection();		//вычисление направления по координатам, взятых с SetAim
 	int checkCollisionWithMap(float, float);
 	sf::Vector2f SpaunTarget();		//смотрим где наши спауны на карте

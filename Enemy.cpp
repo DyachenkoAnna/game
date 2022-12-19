@@ -141,7 +141,7 @@ int Enemy::SetAim(sf::Vector2f XY)
 }
 
 
-void Enemy::animation()
+int Enemy::animation()
 {
 	if (name == "flybot")
 	{
