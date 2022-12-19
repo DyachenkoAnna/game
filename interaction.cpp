@@ -10,7 +10,7 @@ Engine::Engine()
 	Hero = new Player(allImage, 500, 500, 70, 80, "hero");	//Создаем объект героя
 	GameOver = false;//игра "не окончена"
 
-	font.loadFromFile("images\\Calibri.ttf");//шрифт загрузили
+	font.loadFromFile("images\\CyrilicOld.ttf");//шрифт загрузили
 	text.setFont(font);
 	text.setCharacterSize(24);
 	text.setStyle(sf::Text::Bold);
