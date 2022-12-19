@@ -1,7 +1,7 @@
 #pragma once
 #include  "Entity.h";
 #include  "Constants.h"
-class : public Entity
+class Bullet : public Entity
 {
 public:
 	Bullet(sf::Image& image, float X, float Y, int W, int H, float rotation, sf::String Name, int);

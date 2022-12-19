@@ -22,13 +22,18 @@ Bullet::Bullet(sf::Image& image, float X, float Y, int W, int H, float rotation,
 		sprite.setTextureRect(sf::IntRect(0, 160, 49, 80));
 		sprite.setRotation(rotationPer - 180);
 	}
+	else if (name == "BossBullet")
+	{
+		sprite.setScale(0.4, 0.4);
+		sprite.setTextureRect(sf::IntRect(658, 0, 121, 121));//+121
+		speed = 3;
+	}
 
 
 	dx = cos(rotationPer / 180 * 3.14159265) * 0.1;
 	dy = sin(rotationPer / 180 * 3.14159265) * 0.085;
 	// направление движения от угла
 	sprite.setPosition(x + w / 2, y + w / 2);
-
 }
 
 void Bullet::update(float time, sf::String TileMap[HEIGHT_MAP])
@@ -60,17 +65,25 @@ void Bullet::update(float time, sf::String TileMap[HEIGHT_MAP])
 
 int Bullet::GetDamage()
 {
-	life = false;//Проверка, что пуля достигла цели
+	life = false;// пуля достигает цели
 	return damage;
 }
 
 sf::FloatRect Bullet::GetRect()
 {
 	sf::FloatRect BufRect;
-
-	BufRect.left = x - w * (cos((rotationPer + 90) / 180 * 3.14159265));
-	BufRect.top = y - h * (sin((rotationPer + 90) / 180 * 3.14159265));
-	//Квадрат вписали в пулю
+	if (name == "BossBullet")
+	{
+		BufRect.left = x + 10;
+		BufRect.top = y + 10;
+		//Смещение квадрата
+	}
+	else
+	{
+		BufRect.left = x - w * (cos((rotationPer + 90) / 180 * 3.14159265));
+		BufRect.top = y - h * (sin((rotationPer + 90) / 180 * 3.14159265));
+		//Квадрат вписали в пулю
+	}
 
 	BufRect.height = h;
 	BufRect.width = w;
@@ -121,6 +134,22 @@ void Bullet::animation()
 			moveTimer = 0;
 		}
 	}
+	else if (name == "BossBullet")
+	{
+		if (moveTimer < 100)
+		{
+			sprite.setTextureRect(sf::IntRect(658, 0, 121, 121));
+		}
+		else if (moveTimer < 200)
+		{
+			sprite.setTextureRect(sf::IntRect(658, 121, 121, 121));//+121
+		}
+		else
+		{
+			moveTimer = 0;
+		}
+	}
+	// смена картинок
 }
 
 void Bullet::checkCollisionWithMap(float Dx, float Dy, sf::String TileMap[HEIGHT_MAP])
