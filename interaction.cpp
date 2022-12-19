@@ -146,6 +146,9 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 	sf::Texture menuTexturePlay, menuTextureQuit, menuTextureRestart;
 	menuTexturePlay.loadFromFile("images/Play.png");
 	menuTextureQuit.loadFromFile("images/Quit.png");
+
+	menuTextureRestart.loadFromFile("images/Restart.png");	//Добавила кнопку restart
+
 	//также нужно добавить рестарт
 	sf::Sprite menuPlay(menuTexturePlay), menuQuit(menuTextureQuit), menuRestart(menuTextureRestart);
 	bool isMenu = 1;
@@ -157,7 +160,7 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 	}
 	else
 	{
-		menuPlay.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 - 120);
+		//удалила play: после смерти мб только restart
 		menuRestart.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16);
 	}
 	menuQuit.setPosition(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 + 120);
@@ -167,7 +170,8 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 	{
 		menuPlay.setColor(sf::Color::White);
 		menuQuit.setColor(sf::Color::White);
-		//также нужно будет добавить рестарт
+		menuRestart.setColor(sf::Color::White);			//Добавила restart
+
 		menuNum = 0;
 		sf::RectangleShape rectangle(sf::Vector2f(20, 20));
 		rectangle.setSize(sf::Vector2f(WIDTH_MAP * 32 - 40, HEIGHT_MAP * 32 - 40));
@@ -175,10 +179,13 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 		{
 			rectangle.setFillColor(sf::Color(255, 228, 200, 1));
 			rectangle.setPosition(sf::Vector2f(20, 20));
-			if (sf::IntRect(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 - 120, 310, 110).contains(sf::Mouse::getPosition()))
-			{
-				menuRestart.setColor(sf::Color::Blue); menuNum = 1;// 1 = рестарт
-			}
+
+			//restart
+			 if (sf::IntRect(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16 - 120, 310, 110).contains(sf::Mouse::getPosition()))
+			 {
+			 	menuRestart.setColor(sf::Color::Blue); menuNum = 1;// 1 = рестарт
+			 }
+
 			if (sf::IntRect(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16, 310, 110).contains(sf::Mouse::getPosition()))
 			{
 				menuPlay.setColor(sf::Color::Blue); menuNum = 2;
@@ -192,6 +199,7 @@ int Engine::RestartMenu(sf::RenderWindow& target)
 		{
 			//если игра окончена, то саму игру надо закрасить
 			target.clear(sf::Color(255, 228, 200));
+
 			if (sf::IntRect(WIDTH_MAP * 16 - 155, HEIGHT_MAP * 16, 310, 110).contains(sf::Mouse::getPosition()))
 			{
 				menuRestart.setColor(sf::Color::Blue); menuNum = 1;
