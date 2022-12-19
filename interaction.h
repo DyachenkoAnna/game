@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include "Player.h"
+#include "Bullet.h"
 class Engine {
 public:
     Engine();
@@ -9,6 +10,7 @@ public:
 
 private:
     Player* Hero;
+    std::vector<Bullet> bullets;// вектор пуль
     std::vector<Enemy> enemies;// вектор врагов
     sf::Clock clock;// аппаратный таймер
     float time;// основное время, отвечает за скорость игры
