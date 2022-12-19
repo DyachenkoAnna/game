@@ -163,21 +163,78 @@ int Engine::play(int number)
 				sf::Vector2f BufXYHero = Hero->GetXY();
 				iterEnemies->SetAim(BufXYHero);//цель - герой 
 				iterEnemies->update(time);//враг сходил
+				if (iterEnemies->GetName() == "BOSSbot" && iterEnemies->GetBOSSdamagetimer() > 2000)
+				{
+					//босс стреляет раз в 2 секунды
+					sf::Vector2f BufXYEnemy = iterEnemies->GetXY();//берем координаты
+					float rotation = rotation = atan2(BufXYHero.y - BufXYEnemy.y, BufXYHero.x - BufXYEnemy.x) * 180 / 3.14159265 + 90;
+					//вычисляем угол поворота
+					Bullet* anotherBullet = new Bullet(allImage, BufXYEnemy.x, BufXYEnemy.y, 30, 30, rotation, "BossBullet", 25);
+					bullets.push_back(*anotherBullet);//создаем и добавляем в вектор пулю
+					iterEnemies->recetBOSSdamagetimer();
+				}
 
 				iterBullet = bullets.begin();
-				//while (iterBullet != bullets.end())
-				//{
-					//if (iterBullet->isAlive())
-					//{
+				while (iterBullet != bullets.end())
+				{
+					if (iterBullet->isAlive())
+					{
+						if (iterBullet->GetName() != "BossBullet" && iterBullet->GetRect().intersects(iterEnemies->GetRect()))
+						{
+							iterEnemies->struck(iterBullet->GetDamage());
+						}
+						if (iterBullet->GetName() != "HeroBullet" && iterBullet->GetRect().intersects(Hero->GetRect()))
+						{
+							Hero->struck(iterBullet->GetDamage());
+						}
+						++iterBullet;
 						//Находим пересечение хитбоксов пули и врагов с ГГ, далее уничтожается пуля, а отсальные получают урон
-					//}
-					//else
-					//{
-						//iterBullet = bullets.erase(iterBullet); //стереть из списка
-					//}
-				//}
+					}
+					else
+					{
+						iterBullet = bullets.erase(iterBullet); //стереть из списка
+					}
+				}
 
+				if (Hero->GetRect().intersects(iterEnemies->GetRect()))
+				{
+					if (iterEnemies->GetName() == "BOSSbot")
+					{
+						if (iterEnemies->GetStatus() != "anikilled")
+						{
+							if (iterEnemies->GetBOSSdamagetimer() > 500)
+							{
+								//При пересечении хитбоксов ГГ и босса, босс бъет раз в 500 мкс
+								Hero->struck(20);
+								iterEnemies->recetBOSSdamagetimer();
+							}
+
+						}
+					}
+					else
+					{
+						iterEnemies->struck(100);
+						//Другие же получают урон, несовместимый с жизнью
+						if (iterEnemies->GetStatus() != "anikilled")
+						{
+							Hero->struck(20);
+						}
+					}
+
+				}
 				++iterEnemies;
+			}
+			else
+			{
+				if (iterEnemies->GetName() == "BOSSbot")
+				{
+					Hero->Addscore(500);//Враг убит - получили очки
+				}
+				else if (iterEnemies->GetName() == "flybot")
+				{
+					Hero->Addscore(100);
+				}
+				iterEnemies = enemies.erase(iterEnemies); //стереть из списка
 			}
 
 		}
@@ -201,9 +258,12 @@ int Engine::play(int number)
 		Hero->draw(window);//рисуется герой-танк
 		iterEnemies = enemies.begin();
 		while (iterEnemies != enemies.end()) {
+			if (iterEnemies->GetName() != "BOSSbot")
+			{
 				iterEnemies->draw(window);
 				//не босс рисуется
 				//босс выше всех летает
+			}
 			++iterEnemies;
 		}
 		iterBullet = bullets.begin();
@@ -213,7 +273,10 @@ int Engine::play(int number)
 		}
 		iterEnemies = enemies.begin();
 		while (iterEnemies != enemies.end()) {
+			if (iterEnemies->GetName() == "BOSSbot")
+			{
 				iterEnemies->draw(window);
+			}
 			++iterEnemies;
 		}
 		window.draw(GunDamage);
