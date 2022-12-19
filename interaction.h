@@ -17,6 +17,9 @@ private:
     sf::Image map_image;//объект изображения для карты
     sf::Image allImage;//Все изображения, которые исполузуются поверх карты
     sf::Sprite s_map;//спрайт для карты
+    sf::Sprite Health;//для здоровья
+    sf::Sprite GunDamage;//для уровня заряда пушки
+
     sf::Texture map;
     bool GameOver;//тригер для окончания игры
     int MainMenu(sf::RenderWindow& target);//меню при старте
