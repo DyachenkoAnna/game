@@ -75,6 +75,7 @@ int Engine::play(int number)
 					window.close();
 					return 1;
 				default:
+					clock.restart(); //пофиксили баг - теперь работает пауза без косяков
 					break;
 				}
 			}
