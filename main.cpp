@@ -1,3 +1,5 @@
+//release-1.0
+
 #include <ctime>
 #include "interaction.h"
 

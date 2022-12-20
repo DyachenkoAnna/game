@@ -42,3 +42,4 @@ VeryVeryGoodGame.*
 #vs files
 *.vcxproj 
 *.vcxproj.filters
+*.vcxproj.user
