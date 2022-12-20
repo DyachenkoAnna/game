@@ -42,8 +42,12 @@ int Player::control(sf::Event event)
 	state = stay;
 	sf::Vector2i DXY = sf::Mouse::getPosition();
 	//sf::Vector2i DXY = sf::Vector2i(event.mouseMove.x, event.mouseMove.y);
-	gunrotation = atan2(-y + DXY.y - 40, -x + DXY.x - 35) * 180 / 3.14159265 + 90;
 	
+	//fix release 1.0 ++
+	//gunrotation = atan2(-y + DXY.y, -x + DXY.x) * 180 / 3.14159265 + 90;
+	gunrotation = atan2(-y + DXY.y - 40, -x + DXY.x - 35) * 180 / 3.14159265 + 90;
+	//fix release 1.0 --
+
 	if (sf::Keyboard::isKeyPressed) {//если нажата клавиша
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 			state = left; speed = 0.1;
@@ -189,6 +193,8 @@ int Player::update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event)
 	return 0;
 }
 
+//fix release 1.0 ++
+//переработка углов, изменение условий под них
 //Положение пушки
 sf::Vector2f Player::GetgunXY()
 {
@@ -221,12 +227,14 @@ sf::Vector2f Player::GetgunXY()
 
 	return buf;
 }
+//fix release 1.0 --
+
 
 //Окрашивание при нанесении урона
 void Player::struck(int damage)
 {
 	health -= damage;
-	struckTimer = 200;//на 2мс в красный цвет
+	struckTimer = 200;//на 200мс в красный цвет
 }
 
 //отрисовка

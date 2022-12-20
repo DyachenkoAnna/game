@@ -3,7 +3,7 @@
 
 Enemy::Enemy(sf::Image& image, float X, float Y, int W, int H, sf::String Name, sf::String TileMapEnemy[HEIGHT_MAP]) :Entity(image, X, Y, W, H, Name)
 {
-	speed = 0.5; //при 1 слишком быстро, лучше медленнее
+	speed = 0.1; //при 0,5, оказывается, тоже очень быстро, лучше много медленных врагов)
 	BOSSdamagetimer = 0;
 	for (int i = 0; i < HEIGHT_MAP; i++)
 	{
@@ -148,10 +148,20 @@ int Enemy::SetAim(sf::Vector2f XY)
 int Enemy::animation()
 {
 	if (name == "flybot")
-	{
-		healthSprite.setTextureRect(sf::IntRect(0, 0, 9 + health / 4, 8));//health ('max = 100') / 4 = 25
-		if (status == "anikilled")
+	{	
+		//fix release 1.0 ++
+		//healthSprite.setTextureRect(sf::IntRect(0, 0, 9 + health / 4, 8));//health ('max = 100') / 4 = 25
+		if (status != "anikilled")
 		{
+			healthSprite.setTextureRect(sf::IntRect(0, 0, 9 + health / 4, 8));//health ('max = 100') / 4 = 25
+		}
+		//fix release 1.0 --
+		if (status == "anikilled")
+		{	
+			//fix release 1.0 ++
+			healthSprite.setTextureRect(sf::IntRect(0, 0, 0, 0)); //убираем полоску здоровья совсем, если бот начинает умирать
+			//fix release 1.0 --
+
 			if (moveTimer < 100)
 			{
 				sprite.setTextureRect(sf::IntRect(240, 1, 80, 80));
