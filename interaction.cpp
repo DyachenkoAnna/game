@@ -53,7 +53,10 @@ int Engine::play(int number)
 	gunDamageTexture.loadFromImage(gunDamageImg);
 	gunDamageTexture.setRepeated(true);
 	GunDamage.setTexture(gunDamageTexture);
-	Health.setTextureRect(sf::IntRect(0, 0, 32, 32));//Поставили картинку здоровья
+	//fix release 1.0 ++
+	//Health.setTextureRect(sf::IntRect(0, 0, 32, 32));//Поставили картинку здоровья
+	Health.setTextureRect(sf::IntRect(0, 0, 33, 32));//Поставили картинку здоровья //картинка одного сердечка на самом деле 33*32
+	//fix release 1.0 --
 	Health.setScale(0.5, 0.5);
 	Health.setPosition(10, 10);
 	GunDamage.setTextureRect(sf::IntRect(0, 0, 70, 348));//Поставили картинку заряда пушки
@@ -109,7 +112,10 @@ int Engine::play(int number)
 		}
 
 		Hero->update(time, TileMapMy, event);//Герой сделал свой ход
-		Health.setTextureRect(sf::IntRect(0, 0, 32 * (Hero->Gethealth() / 20), 32));
+		//fix release 1.0 ++
+		//Health.setTextureRect(sf::IntRect(0, 0, 32 * (Hero->Gethealth() / 20), 32));
+		Health.setTextureRect(sf::IntRect(0, 0, 33 * ((Hero->Gethealth())/20.0), 32)); //картинка одного сердечка на самом деле 33*32
+		//fix release 1.0 --
 		if (gunTimer > 1000)//максимальный урон = большая полоска
 		{
 			GunDamage.setTextureRect(sf::IntRect(0, 0, 70 * 10, 348));
@@ -195,7 +201,8 @@ int Engine::play(int number)
 				if (Hero->GetRect().intersects(iterEnemies->GetRect()))
 				{//При стокновении героя и врагов
 					if (iterEnemies->GetName() == "BOSSbot")
-					{
+					{	
+						//может произойти так, что вам нанесётся урон от взрыва после смерти босса. это нормально)
 						if (iterEnemies->GetStatus() != "anikilled")
 						{
 							if (iterEnemies->GetBOSSdamagetimer() > 500)
@@ -210,7 +217,11 @@ int Engine::play(int number)
 					else
 					{
 						iterEnemies->struck(100);//Другие же получают урон, несовместимый с жизнью
-						if (iterEnemies->GetStatus() != "anikilled")
+						//fix release 1.0 ++
+						//if (iterEnemies->GetStatus() != "anikilled")
+						//а тут учтём условие смерти бота, чтобы он не мог нанести урон после своей смерти:
+						if ((iterEnemies->GetStatus() != "anikilled") && (iterEnemies->GetStatus() != "killed"))
+						//fix release 1.0 --
 						{
 							Hero->struck(20);
 						}

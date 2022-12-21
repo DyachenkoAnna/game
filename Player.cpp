@@ -42,8 +42,12 @@ int Player::control(sf::Event event)
 	state = stay;
 	sf::Vector2i DXY = sf::Mouse::getPosition();
 	//sf::Vector2i DXY = sf::Vector2i(event.mouseMove.x, event.mouseMove.y);
-	gunrotation = atan2(-y + DXY.y, -x + DXY.x) * 180 / 3.14159265 + 90;
 	
+	//fix release 1.0 ++
+	//gunrotation = atan2(-y + DXY.y, -x + DXY.x) * 180 / 3.14159265 + 90;
+	gunrotation = atan2(-y + DXY.y - 40, -x + DXY.x - 35) * 180 / 3.14159265 + 90;
+	//fix release 1.0 --
+
 	if (sf::Keyboard::isKeyPressed) {//если нажата клавиша
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 			state = left; speed = 0.1;
@@ -189,43 +193,48 @@ int Player::update(float time, sf::String TileMap[HEIGHT_MAP], sf::Event event)
 	return 0;
 }
 
+//fix release 1.0 ++
+//переработка углов, изменение условий под них
 //Положение пушки
 sf::Vector2f Player::GetgunXY()
 {
 	sf::Vector2f buf = gun.getPosition();
-	if (gunrotation < 45 && gunrotation > -45)
+	//std::cout << "угол: " << gunrotation << std::endl;
+	if (gunrotation >= -45 && gunrotation < 45)
 	{
-		//верхний угол
-		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265) + 20;
-		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265);
+	    //верхний угол
+		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265) + (70/4);
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) - (80/4);
 	}
-	else if (gunrotation < 135 && gunrotation > 45 || gunrotation < -225 && gunrotation > -270)
+	else if (gunrotation >= 45 && gunrotation < 135)
 	{
-		//правый
+	    //правый
+		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265) - (80/4);
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) + (80/4);
+	}
+	else if (gunrotation >= 135 && gunrotation < 225)
+	{
+        //нижний
+		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265) - (80/2);
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) - (70/4);
+	}
+	else if ((gunrotation >= 225 && gunrotation <= 270)||(gunrotation >= -90 && gunrotation < -45))
+	{
+        //левый
 		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265);
-		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) + 20;
+		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) - (80/2);
 	}
-	else if (gunrotation < -45 && gunrotation > -135)
-	{
-		//левый
-		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265);
-		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265) - 40;
-	}
-	else if (gunrotation < 225 && gunrotation > 135)
-	{
-		//нижний
-		buf.x += 80 * cos((gunrotation - 90) / 180 * 3.14159265) - 40;
-		buf.y += 80 * sin((gunrotation - 90) / 180 * 3.14159265);
-	}
-	//углы не все, но большинство. Чтоб подогнать к концу пушки
+
 	return buf;
 }
+//fix release 1.0 --
+
 
 //Окрашивание при нанесении урона
 void Player::struck(int damage)
 {
 	health -= damage;
-	struckTimer = 200;//на 2мс в красный цвет
+	struckTimer = 200;//на 200мс в красный цвет
 }
 
 //отрисовка
