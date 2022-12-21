@@ -38,3 +38,8 @@ VeryVeryGoodGame.*
 *.exe
 *.out
 *.app
+
+#vs files
+*.vcxproj 
+*.vcxproj.filters
+*.vcxproj.user
